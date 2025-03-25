@@ -2,15 +2,25 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
 export const environment = {
   production: false
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
+const firebaseConfig = {
+  apiKey: "AIzaSyBm8gS_4Ma-1DTHuv6YUC_Dg76jd8H2tmA",
+  authDomain: "proyecto-chat-sfa.firebaseapp.com",
+  projectId: "proyecto-chat-sfa",
+  storageBucket: "proyecto-chat-sfa.firebasestorage.app",
+  messagingSenderId: "507035982788",
+  appId: "1:507035982788:web:dfe1e7f21a69a25b942291",
+  measurementId: "G-Z7SYDHFHYX"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
