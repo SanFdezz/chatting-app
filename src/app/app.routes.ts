@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './home/home.page';
-import { LoginPage } from './pages/login/login.page';
-import { ChatPage } from './pages/chat/chat.page';
-import { SignupPage } from './pages/signup/signup.page';
 
 export const routes: Routes = [
   {
     path: 'home',
-    // loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-    component:HomePage,
+    // la diferencia entre loadComponent y component a secas es que el component en cuanto cargas la pagina se
+    // guarda en memória y el loadComponent carga cuando se le llama a la ruta. Si nunca entras, nunca se carga.
+    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
     path: '',
@@ -17,17 +14,18 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    // loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
-    component:LoginPage,
+    loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },
   {
     path: 'chat',
-    // loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
-    component: ChatPage,
+    loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
   },
   {
     path: 'signup',
-    // loadComponent: () => import('./pages/signup/signup.page').then( m => m.SignupPage)
-    component:SignupPage,
+    loadComponent: () => import('./pages/signup/signup.page').then( m => m.SignupPage)
+  },
+  {
+    path: '**',
+    redirectTo:'home',
   },
 ];
