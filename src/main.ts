@@ -21,12 +21,20 @@ import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingServ
 import { initializeAppCheck, ReCaptchaEnterpriseProvider, provideAppCheck } from '@angular/fire/app-check';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { importProvidersFrom } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    importProvidersFrom(
+      AngularFireModule.initializeApp(environment.firebase), // ✅ Usar AngularFire Compat
+      AngularFireAuthModule
+    ),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'proyecto-chat-sfa',

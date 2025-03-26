@@ -6,7 +6,15 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 export const environment = {
-  production: false
+  production: false,
+  firebase:{
+    apiKey: "AIzaSyBm8gS_4Ma-1DTHuv6YUC_Dg76jd8H2tmA",
+    authDomain: "proyecto-chat-sfa.firebaseapp.com",
+    projectId: "proyecto-chat-sfa",
+    storageBucket: "proyecto-chat-sfa.firebasestorage.app",
+    messagingSenderId: "507035982788",
+    appId: "1:507035982788:web:dfe1e7f21a69a25b942291",
+  }
 };
 
 const firebaseConfig = {
@@ -16,7 +24,6 @@ const firebaseConfig = {
   storageBucket: "proyecto-chat-sfa.firebasestorage.app",
   messagingSenderId: "507035982788",
   appId: "1:507035982788:web:dfe1e7f21a69a25b942291",
-  measurementId: "G-Z7SYDHFHYX"
 };
 
 // Initialize Firebase
