@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent,IonNav } from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,5 +9,6 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,IonNav } from '@ionic/angul
   imports: [IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class HomePage {
+  auth = inject(AuthService);
 
 }

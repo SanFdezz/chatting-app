@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Subscription } from 'rxjs';
 
@@ -8,7 +8,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
+
 export class UserComponent  {
+
   private auth = inject(AngularFireAuth);
   userSubscription: Subscription;
   userData: firebase.default.User | null = null;
