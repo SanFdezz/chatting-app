@@ -1,7 +1,8 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
-  <div>
-    <a routerLink="/login">Log-In</a><br>
-    <a routerLink="/register">Sign-In</a>
-  </div>
+  <ion-header>
+    <auth-buttons></auth-buttons>
+  </ion-header>
+  <ion-content>
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
 </ion-app>

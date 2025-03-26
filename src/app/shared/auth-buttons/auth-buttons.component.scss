@@ -1,0 +1,18 @@
+.register{
+  display: flex;
+  justify-content: right;
+  gap: 1em;
+  font-size: large;
+  background-color: #e6e6e6;
+  padding: 2em;
+
+  .btn{
+    background-color: rgb(89, 151, 151);
+    padding: 1em;
+    border-radius: 1em;
+    color: white;
+    &:hover{
+      background-color: rgb(60, 103, 103);
+    }
+  }
+}
