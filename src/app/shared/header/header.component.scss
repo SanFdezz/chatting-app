@@ -1,0 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Notable&display=swap');
+
+
+header{
+  background-color: #d689c3;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 1em;
+  font-size: large;
+  padding: 2em;
+  h1{
+    font-family: "Notable",sans-serif;
+  }
+}
+

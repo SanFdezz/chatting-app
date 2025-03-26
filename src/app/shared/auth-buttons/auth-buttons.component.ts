@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonButton } from "@ionic/angular/standalone";
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'auth-buttons',
@@ -11,19 +12,18 @@ import firebase from 'firebase/compat/app';
 })
 export class AuthButtonsComponent  {
 
-  auth = inject(AngularFireAuth);
+  auth = inject(AuthService);
+  router = inject(Router);
 
-  // esta línea es para poder registrar y/o iniciar sesión con un nuevo usuario gracias a una cuenta de google
   login(){
-    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    this.auth.login().then(()=> this.router.navigateByUrl('/chat'));
+
   }
 
   logout(){
-    this.auth.signOut();
+    this.auth.logout().then(()=>this.router.navigateByUrl('/home'));
+    ;
   }
-
-
-  constructor() { }
 
 
 }
