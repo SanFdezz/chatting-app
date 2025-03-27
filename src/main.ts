@@ -23,6 +23,7 @@ import { environment } from './environments/environment';
 
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -30,6 +31,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
 
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     importProvidersFrom(
       AngularFireModule.initializeApp(environment.firebase),
       AngularFireAuthModule
