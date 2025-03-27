@@ -31,7 +31,7 @@ export class AuthService {
         localStorage.setItem('userEmail', user.email!);
       } else {
         this.email.set(null);
-        console.log('soy nulo')
+        localStorage.removeItem('userEmail')
       }
     });
   }

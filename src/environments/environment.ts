@@ -10,6 +10,7 @@ export const environment = {
   firebase:{
     apiKey: "AIzaSyBm8gS_4Ma-1DTHuv6YUC_Dg76jd8H2tmA",
     authDomain: "proyecto-chat-sfa.firebaseapp.com",
+    databaseURL:"https://proyecto-chat-sfa-default-rtdb.firebaseio.com/",
     projectId: "proyecto-chat-sfa",
     storageBucket: "proyecto-chat-sfa.firebasestorage.app",
     messagingSenderId: "507035982788",
@@ -20,6 +21,7 @@ export const environment = {
 const firebaseConfig = {
   apiKey: "AIzaSyBm8gS_4Ma-1DTHuv6YUC_Dg76jd8H2tmA",
   authDomain: "proyecto-chat-sfa.firebaseapp.com",
+  databaseURL:"https://proyecto-chat-sfa-default-rtdb.firebaseio.com/",
   projectId: "proyecto-chat-sfa",
   storageBucket: "proyecto-chat-sfa.firebasestorage.app",
   messagingSenderId: "507035982788",

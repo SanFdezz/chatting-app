@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ChatPage{
 
   constructor() { }
+
   user = inject(AuthService);
 
 }

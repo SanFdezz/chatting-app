@@ -25,5 +25,12 @@ export class AuthButtonsComponent  {
     ;
   }
 
+  isLogged():boolean{
+    if(this.auth.getStoredEmail()){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }
