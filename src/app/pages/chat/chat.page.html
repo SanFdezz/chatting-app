@@ -5,7 +5,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button color="dark" shape="round" (click)="chatMessages.sendMessage(mensaje)">
-    Send Message
-  </ion-button>
+  <form [formGroup]="myForm">
+    <ion-item>
+      <ion-input label="New message:" placeholder="Type here..." [clearInput]="true" formControlName="message"></ion-input>
+      <ion-button color="dark" shape="round" (click)="createBetterMessage()" [disabled]="!validMessage">
+        <ion-icon slot="end" name="send-outline"></ion-icon>Send
+      </ion-button>
+    </ion-item>
+  </form>
+  <!-- <p>Value: {{ message.value }}</p> -->
 </ion-content>
+

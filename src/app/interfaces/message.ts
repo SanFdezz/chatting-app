@@ -3,6 +3,6 @@ import { Timestamp } from "firebase/firestore";
 export interface Message {
   user:string;
   message: string;
-  localization:string;
+  date:string;
   // time:Timestamp;
 }

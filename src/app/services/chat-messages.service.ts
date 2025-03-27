@@ -17,7 +17,7 @@ export class ChatMessagesService {
     set(this.newMessageRef, {
       message
     });
-    console.log('Mensaje enviado!'+message)
+    console.log('Mensaje enviado!')
   }
 
 
