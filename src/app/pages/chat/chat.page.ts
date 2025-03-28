@@ -58,5 +58,7 @@ export class ChatPage {
     this.myForm.reset();
   }
 
+  
+
 }
 

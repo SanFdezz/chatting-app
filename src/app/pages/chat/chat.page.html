@@ -11,6 +11,9 @@
       <ion-button color="dark" shape="round" (click)="sendMessage()" [disabled]="!myForm.valid">
         <ion-icon slot="end" name="send-outline"></ion-icon>Send
       </ion-button>
+      <ion-button color="dark" shape="round" (click)="chatMessages.getMessagesByUser()">
+        <ion-icon slot="end" name="send-outline"></ion-icon>Get messages
+      </ion-button>
     </ion-item>
   </form>
   <!-- <p>Value: {{ message.value }}</p> -->
