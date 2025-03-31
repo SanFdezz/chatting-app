@@ -28,7 +28,6 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
   styleUrls: ['./chat.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
     IonInput,
     IonItem,
     IonButton,
@@ -41,7 +40,7 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
     ReactiveFormsModule,
   ],
 })
-export class ChatPage {
+export class ChatPage implements OnInit {
   constructor() {}
 
   myForm = new FormGroup({
@@ -58,7 +57,9 @@ export class ChatPage {
     this.myForm.reset();
   }
 
-  
+  ngOnInit() {
+    this.chatMessages.listenToMessagesByUser();
+  }
 
 }
 

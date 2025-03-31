@@ -5,14 +5,20 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form [formGroup]="myForm">
+  <div class="chat">
+    @for (message of chatMessages.messages(); track $index) {
+      <div class="message">
+        <div class="user"> {{message.user}} </div>
+        <div> {{message.message}} </div>
+        <div class="date"> {{message.date}} </div>
+      </div>
+    }
+  </div>
+  <form [formGroup]="myForm" class="form">
     <ion-item>
       <ion-input label="New message:" placeholder="Type here..." [clearInput]="true" formControlName="message"></ion-input>
       <ion-button color="dark" shape="round" (click)="sendMessage()" [disabled]="!myForm.valid">
-        <ion-icon slot="end" name="send-outline"></ion-icon>Send
-      </ion-button>
-      <ion-button color="dark" shape="round" (click)="chatMessages.getMessagesByUser()">
-        <ion-icon slot="end" name="send-outline"></ion-icon>Get messages
+        Send
       </ion-button>
     </ion-item>
   </form>
