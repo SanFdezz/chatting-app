@@ -59,8 +59,8 @@ export class ChatPage implements OnInit {
   }
 
   obtainOlderMessages(event: any) {
-    console.log(this.chatMessages.lastMessageDate);
-    this.chatMessages.loadMessages(this.chatMessages.lastMessageDate);
+    console.log('llamado')
+    this.chatMessages.loadMessages();
     event.target.complete();
 
     if (this.chatMessages.messages().length == 0) {
@@ -69,6 +69,6 @@ export class ChatPage implements OnInit {
   }
 
   ngOnInit() {
-    this.chatMessages.loadMessages(undefined);
+    this.chatMessages.loadMessages();
   }
 }
