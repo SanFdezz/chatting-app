@@ -14,6 +14,9 @@
       </div>
     }
   </div>
+  <ion-infinite-scroll (ionInfinite)="obtainOlderMessages($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <form [formGroup]="myForm" class="form">
     <ion-item>
       <ion-input label="New message:" placeholder="Type here..." [clearInput]="true" formControlName="message"></ion-input>

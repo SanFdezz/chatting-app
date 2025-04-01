@@ -1,18 +1,26 @@
 import { Injectable, signal } from '@angular/core';
 import { getDatabase, push, ref, set } from 'firebase/database';
 import { Message } from '../interfaces/message';
-import { onValue, orderByChild, query } from '@angular/fire/database';
+import {
+  endBefore,
+  limitToFirst,
+  onValue,
+  orderByChild,
+  query,
+  startAfter,
+} from '@angular/fire/database';
 import { getAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatMessagesService {
-
   db = getDatabase();
   messageListRef = ref(this.db, 'messages');
-  user = getAuth()
+  user = getAuth();
   messages = signal<Message[]>([]);
+  lastMessageDate: string | undefined = undefined;
+  pageSize = 10;
 
   sendMessage(newMessage: string, username: string) {
     const date = new Date().toString();
@@ -28,18 +36,46 @@ export class ChatMessagesService {
     });
   }
 
-  listenToMessagesByUser() {
-    const messagesQuery = query(ref(this.db, 'messages'), orderByChild('date')); // Ajusta el orden según lo necesites
+  loadMessages(lastLoadedMessage?: string) {
+    let messagesQuery;
+
+    if (lastLoadedMessage !== undefined) {
+      messagesQuery = query(
+        ref(this.db, 'messages'),
+        orderByChild('date'),
+        endBefore(lastLoadedMessage),
+        limitToFirst(this.pageSize)
+      );
+    } else {
+      messagesQuery = query(
+        ref(this.db, 'messages'),
+        orderByChild('date'),
+        limitToFirst(this.pageSize)
+
+      );
+    }
 
     onValue(messagesQuery, (snapshot) => {
       if (snapshot.exists()) {
         const allMessages: Message[] = [];
+        let lastDate = this.lastMessageDate;
 
-        snapshot.forEach((childSnapshot) => {
-          allMessages.push(childSnapshot.val().message);
-        });
-        // console.log(allMessages);
+        if (this.lastMessageDate !== undefined) {
+          snapshot.forEach((childSnapshot) => {
+            const message = childSnapshot.val().message;
+            allMessages.push(message);
+            lastDate = message.date;
+          });
+        } else {
+          snapshot.forEach((childSnapshot) => {
+            const message = childSnapshot.val().message;
+            allMessages.push(message);
+            lastDate = message.date;
+          });
+        }
         this.messages.set(allMessages);
+        this.lastMessageDate = lastDate;
+        console.log(this.messages());
       } else {
         this.messages.set([]);
       }

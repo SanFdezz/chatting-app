@@ -15,12 +15,11 @@ import {
   IonButton,
   IonItem,
   IonInput,
-  IonIcon,
+  IonInfiniteScrollContent,
+  IonInfiniteScroll,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatMessagesService } from 'src/app/services/chat-messages.service';
-
-
 
 @Component({
   selector: 'app-chat',
@@ -28,6 +27,8 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
   styleUrls: ['./chat.page.scss'],
   standalone: true,
   imports: [
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
     IonInput,
     IonItem,
     IonButton,
@@ -50,16 +51,24 @@ export class ChatPage implements OnInit {
   user = inject(AuthService);
   chatMessages = inject(ChatMessagesService);
 
-  sendMessage(){
+  sendMessage() {
     const message = this.myForm.get('message')?.value as string;
     const username = this.user.username() as string;
-    this.chatMessages.sendMessage(message,username);
+    this.chatMessages.sendMessage(message, username);
     this.myForm.reset();
   }
 
-  ngOnInit() {
-    this.chatMessages.listenToMessagesByUser();
+  obtainOlderMessages(event: any) {
+    console.log(this.chatMessages.lastMessageDate);
+    this.chatMessages.loadMessages(this.chatMessages.lastMessageDate);
+    event.target.complete();
+
+    if (this.chatMessages.messages().length == 0) {
+      event.target.disabled = true;
+    }
   }
 
+  ngOnInit() {
+    this.chatMessages.loadMessages(undefined);
+  }
 }
-
