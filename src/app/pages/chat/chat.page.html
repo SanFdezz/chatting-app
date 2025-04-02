@@ -1,6 +1,17 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Chats de {{user.username()}}</ion-title>
+  <ion-toolbar style="padding: 1em;">
+    <ion-title style="color: black;">Chats de {{user.username()}}</ion-title>
+    <ion-button id="present-alert" color="dark" shape="round" style="margin-left: 1em;">
+      Eliminar mensajes del chat
+    </ion-button>
+    <ion-alert
+    *ngIf="alertDelete()"
+    trigger="present-alert"
+    header="¡Cuidado!"
+    message="¿Seguro que deseas eliminar todos los mensajes? Esta acción no se puede deshacer."
+    [buttons]="alertButtons"
+    (didDismiss)="alertDelete.set(false)">
+    </ion-alert>
   </ion-toolbar>
 </ion-header>
 
@@ -26,9 +37,6 @@
       </ion-button>
     </ion-item>
   </form>
-  <ion-button (click)="chatMessages.deleteMessages()">
-    BOTON PARA BORRAR BD
-  </ion-button>
-  <!-- <p>Value: {{ message.value }}</p> -->
+
 </ion-content>
 

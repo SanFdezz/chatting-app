@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -16,7 +16,7 @@ import {
   IonItem,
   IonInput,
   IonInfiniteScrollContent,
-  IonInfiniteScroll,
+  IonInfiniteScroll, IonAlert
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatMessagesService } from 'src/app/services/chat-messages.service';
@@ -26,7 +26,7 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonAlert,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonInput,
@@ -42,7 +42,7 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
   ],
 })
 export class ChatPage implements OnInit {
-  constructor() {}
+  constructor() { }
 
   myForm = new FormGroup({
     message: new FormControl<string>('', Validators.required),
@@ -50,27 +50,51 @@ export class ChatPage implements OnInit {
 
   user = inject<AuthService>(AuthService);
   chatMessages = inject<ChatMessagesService>(ChatMessagesService);
-  infiniteScrollDisabled:boolean = true;
+  infiniteScrollDisabled: boolean = true;
+  alertDelete: WritableSignal<boolean> = signal(true);
 
   sendMessage() {
     const message = this.myForm.get('message')?.value as string;
-    const username = this.user.username() as string;
-    this.chatMessages.sendMessage(message, username);
-    this.myForm.reset();
+    if(message.trim()!==''){
+      const username = this.user.username() as string;
+      this.chatMessages.sendMessage(message, username);
+      this.myForm.reset();
+    }
   }
 
   obtainOlderMessages(event: any) {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.chatMessages.loadMessages();
       event.target.complete();
-    },1000);
+    }, 1000);
 
-    if (this.chatMessages.messages().length == 0) {
+    if (this.chatMessages.messages().length < this.chatMessages.amountOfMessages()) {
+      this.chatMessages.loadMessages();
+      event.target.complete();
       event.target.disabled = true;
     }
 
   }
-  
+
+  alertButtons =
+    [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          this.alertDelete.set(false);
+        },
+      },
+      {
+        text: 'Confirm',
+        role: 'confirm',
+        handler: () => {
+          this.chatMessages.deleteMessages();
+        },
+      },
+    ];
+
+
   ngOnInit() {
     this.chatMessages.loadMessages();
     setTimeout(() => {

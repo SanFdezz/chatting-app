@@ -26,3 +26,18 @@
   text-decoration: none;
 }
 
+.content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .text{
+    color: black;
+    font-size: medium;
+
+    b{
+      color: #d689c3;
+    }
+  }
+}
+
