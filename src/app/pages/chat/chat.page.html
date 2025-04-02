@@ -4,8 +4,12 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
-  <div class="chat">
+  <ion-infinite-scroll (ionInfinite)="obtainOlderMessages($event)" threshold="-10" position="top" [disabled]="infiniteScrollDisabled">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="chat" id="chat">
     @for (message of chatMessages.messages(); track $index) {
       <div class="message">
         <div class="user"> {{message.user}} </div>
@@ -14,10 +18,7 @@
       </div>
     }
   </div>
-  <ion-infinite-scroll (ionInfinite)="obtainOlderMessages($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  <form [formGroup]="myForm" class="form">
+  <form [formGroup]="myForm" class="form" (keydown.enter)="sendMessage()">
     <ion-item>
       <ion-input label="New message:" placeholder="Type here..." [clearInput]="true" formControlName="message"></ion-input>
       <ion-button color="dark" shape="round" (click)="sendMessage()" [disabled]="!myForm.valid">
@@ -25,6 +26,9 @@
       </ion-button>
     </ion-item>
   </form>
+  <ion-button (click)="chatMessages.deleteMessages()">
+    BOTON PARA BORRAR BD
+  </ion-button>
   <!-- <p>Value: {{ message.value }}</p> -->
 </ion-content>
 

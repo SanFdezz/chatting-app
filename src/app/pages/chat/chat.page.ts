@@ -48,8 +48,9 @@ export class ChatPage implements OnInit {
     message: new FormControl<string>('', Validators.required),
   });
 
-  user = inject(AuthService);
-  chatMessages = inject(ChatMessagesService);
+  user = inject<AuthService>(AuthService);
+  chatMessages = inject<ChatMessagesService>(ChatMessagesService);
+  infiniteScrollDisabled:boolean = true;
 
   sendMessage() {
     const message = this.myForm.get('message')?.value as string;
@@ -59,16 +60,22 @@ export class ChatPage implements OnInit {
   }
 
   obtainOlderMessages(event: any) {
-    console.log('llamado')
-    this.chatMessages.loadMessages();
-    event.target.complete();
+    setTimeout(()=>{
+      this.chatMessages.loadMessages();
+      event.target.complete();
+    },1000);
 
     if (this.chatMessages.messages().length == 0) {
       event.target.disabled = true;
     }
-  }
 
+  }
+  
   ngOnInit() {
     this.chatMessages.loadMessages();
+    setTimeout(() => {
+      this.infiniteScrollDisabled = false;
+    }, 3000);
   }
+
 }

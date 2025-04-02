@@ -6,6 +6,7 @@ import {
   onValue,
   orderByChild,
   query,
+  remove,
 } from '@angular/fire/database';
 import { getAuth } from '@angular/fire/auth';
 
@@ -17,8 +18,7 @@ export class ChatMessagesService {
   messageListRef = ref(this.db, 'messages');
   user = getAuth();
   messages = signal<Message[]>([]);
-  lastMessageDate: string | undefined = undefined;
-  amountOfMessages:WritableSignal<number> = signal(3)
+  amountOfMessages:WritableSignal<number> = signal(10)
 
   sendMessage(newMessage: string, username: string) {
     const date = new Date().toString();
@@ -36,30 +36,24 @@ export class ChatMessagesService {
   }
 
   loadMessages() {
-
+    console.log(this.amountOfMessages())
     let messagesQuery = query(
       ref(this.db, 'messages'),
       orderByChild('date'),
       limitToLast(this.amountOfMessages())
     );
 
-    this.amountOfMessages()+1;
+    this.amountOfMessages.set(this.amountOfMessages()+10);
 
     onValue(messagesQuery, (snapshot) => {
       if (snapshot.exists()) {
         const allMessages: Message[] = [];
-        let lastDate = this.lastMessageDate;
-
         snapshot.forEach((childSnapshot) => {
           const message = childSnapshot.val().message;
-          // console.log(message)
           allMessages.push(message);
-          lastDate = message.date;
         });
 
         this.messages.set(allMessages);
-        this.lastMessageDate = lastDate;
-        console.log(this.messages());
 
       } else {
         this.messages.set([]);
@@ -67,7 +61,11 @@ export class ChatMessagesService {
     });
   }
 
-
+  deleteMessages(){
+    remove(ref(this.db, "/"))
+      .then(() => console.log("eliminada"))
+      .catch((error) => console.error(error));
+  }
 
   constructor() {}
 }
