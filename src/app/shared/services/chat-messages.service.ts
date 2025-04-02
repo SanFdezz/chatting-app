@@ -1,14 +1,15 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { getDatabase, push, ref, set } from 'firebase/database';
-import { Message } from '../interfaces/message';
+
+import { getAuth } from '@angular/fire/auth';
 import {
+  get,
   limitToLast,
-  onValue,
   orderByChild,
   query,
   remove,
 } from '@angular/fire/database';
-import { getAuth } from '@angular/fire/auth';
+import { Message } from 'src/app/core/interfaces/message';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +18,10 @@ export class ChatMessagesService {
   db = getDatabase();
   messageListRef = ref(this.db, 'messages');
   user = getAuth();
-  messages = signal<Message[]>([]);
-  amountOfMessages:WritableSignal<number> = signal(10)
+  messages:WritableSignal<Message[]> = signal([]);
+  amountOfMessages: WritableSignal<number> = signal(10);
 
-  sendMessage(newMessage: string, username: string) {
+  sendMessage(newMessage: string, username: string): void {
     const date = new Date().toString();
     const message: Message = {
       user: username,
@@ -30,42 +31,39 @@ export class ChatMessagesService {
 
     // RECUERDA!!!! El newMessageRef se pone dentro de la funcion enviar ya que si no, se sobreescribe todo el rato el mensaje
     const newMessageRef = push(this.messageListRef);
-    set(newMessageRef, {
+    set(newMessageRef,
       message,
-    });
+    );
+    this.messages.update((_messages) => [..._messages, message]);
   }
 
-  loadMessages() {
-    console.log(this.amountOfMessages())
+  loadMessages(): void {
     let messagesQuery = query(
       ref(this.db, 'messages'),
       orderByChild('date'),
-      limitToLast(this.amountOfMessages())
+      limitToLast(this.amountOfMessages()),
     );
 
-    this.amountOfMessages.set(this.amountOfMessages()+10);
+    this.amountOfMessages.set(this.amountOfMessages() + 10);
 
-    onValue(messagesQuery, (snapshot) => {
+    get(messagesQuery).then((snapshot) => {
       if (snapshot.exists()) {
         const allMessages: Message[] = [];
         snapshot.forEach((childSnapshot) => {
-          const message = childSnapshot.val().message;
+          const message = childSnapshot.val();
           allMessages.push(message);
         });
 
         this.messages.set(allMessages);
-
       } else {
         this.messages.set([]);
       }
     });
   }
 
-  deleteMessages(){
-    remove(ref(this.db, "/"))
-      .then(() => console.log("eliminada"))
+  deleteMessages(): void {
+    remove(ref(this.db, '/'))
+      .then(() => console.log('eliminada'))
       .catch((error) => console.error(error));
   }
-
-  constructor() {}
 }

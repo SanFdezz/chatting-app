@@ -1,42 +1,61 @@
 <ion-header [translucent]="true">
-  <ion-toolbar style="padding: 1em;">
-    <ion-title style="color: black;">Chats de {{user.username()}}</ion-title>
-    <ion-button id="present-alert" color="dark" shape="round" style="margin-left: 1em;">
+  <ion-toolbar style="padding: 1em">
+    <ion-title style="color: black">Chats de {{username}}</ion-title>
+    <ion-button
+      id="present-alert"
+      color="dark"
+      shape="round"
+      style="margin-left: 1em"
+    >
       Eliminar mensajes del chat
     </ion-button>
-    <ion-alert
-    *ngIf="alertDelete()"
-    trigger="present-alert"
-    header="¡Cuidado!"
-    message="¿Seguro que deseas eliminar todos los mensajes? Esta acción no se puede deshacer."
-    [buttons]="alertButtons"
-    (didDismiss)="alertDelete.set(false)">
-    </ion-alert>
+    @if(alertDelete()){
+      <ion-alert
+        trigger="present-alert"
+        header="¡Cuidado!"
+        message="¿Seguro que deseas eliminar todos los mensajes? Esta acción no se puede deshacer."
+        [buttons]="alertButtons"
+        (didDismiss)="alertDelete.set(false)"
+      >
+      </ion-alert>
+    }
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
-  <ion-infinite-scroll (ionInfinite)="obtainOlderMessages($event)" threshold="-10" position="top" [disabled]="infiniteScrollDisabled">
+  <ion-infinite-scroll
+    (ionInfinite)="obtainOlderMessages($event)"
+    threshold="-10"
+    position="top"
+    [disabled]="infiniteScrollDisabled"
+  >
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <div class="chat" id="chat">
-    @for (message of chatMessages.messages(); track $index) {
-      <div class="message">
-        <div class="user"> {{message.user}} </div>
-        <div> {{message.message}} </div>
-        <div class="date"> {{message.date}} </div>
-      </div>
+    @for (message of chatService.messages(); track $index) {
+    <div class="message">
+      <div class="user">{{message.user}}</div>
+      <div>{{message.message}}</div>
+      <div class="date">{{message.date}}</div>
+    </div>
     }
   </div>
-  <form [formGroup]="myForm" class="form" (keydown.enter)="sendMessage()">
+  <form [formGroup]="myForm" class="form" (ngSubmit)="sendMessage()">
     <ion-item>
-      <ion-input label="New message:" placeholder="Type here..." [clearInput]="true" formControlName="message"></ion-input>
-      <ion-button color="dark" shape="round" (click)="sendMessage()" [disabled]="!myForm.valid">
+      <ion-input
+        label="New message:"
+        placeholder="Type here..."
+        [clearInput]="true"
+        formControlName="message"
+      ></ion-input>
+      <ion-button
+        color="dark"
+        shape="round"
+        (click)="sendMessage()"
+        [disabled]="!myForm.valid"
+      >
         Send
       </ion-button>
     </ion-item>
   </form>
-
 </ion-content>
-

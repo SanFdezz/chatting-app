@@ -1,5 +1,11 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,25 +14,27 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  IonAlert,
+  IonButton,
   IonContent,
   IonHeader,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonInput,
+  IonItem,
   IonTitle,
   IonToolbar,
-  IonButton,
-  IonItem,
-  IonInput,
-  IonInfiniteScrollContent,
-  IonInfiniteScroll, IonAlert
 } from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/services/auth.service';
-import { ChatMessagesService } from 'src/app/services/chat-messages.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ChatMessagesService } from 'src/app/shared/services/chat-messages.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [IonAlert,
+  imports: [
+    IonAlert,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonInput,
@@ -42,64 +50,62 @@ import { ChatMessagesService } from 'src/app/services/chat-messages.service';
   ],
 })
 export class ChatPage implements OnInit {
-  constructor() { }
+  authService = inject<AuthService>(AuthService);
+  chatService = inject<ChatMessagesService>(ChatMessagesService);
+  infiniteScrollDisabled: boolean = true;
+  alertDelete: WritableSignal<boolean> = signal(true);
+  username = this.authService.user()?.displayName;
 
   myForm = new FormGroup({
     message: new FormControl<string>('', Validators.required),
   });
 
-  user = inject<AuthService>(AuthService);
-  chatMessages = inject<ChatMessagesService>(ChatMessagesService);
-  infiniteScrollDisabled: boolean = true;
-  alertDelete: WritableSignal<boolean> = signal(true);
-
-  sendMessage() {
-    const message = this.myForm.get('message')?.value as string;
-    if(message.trim()!==''){
-      const username = this.user.username() as string;
-      this.chatMessages.sendMessage(message, username);
-      this.myForm.reset();
-    }
-  }
-
-  obtainOlderMessages(event: any) {
-    setTimeout(() => {
-      this.chatMessages.loadMessages();
-      event.target.complete();
-    }, 1000);
-
-    if (this.chatMessages.messages().length < this.chatMessages.amountOfMessages()) {
-      this.chatMessages.loadMessages();
-      event.target.complete();
-      event.target.disabled = true;
-    }
-
-  }
-
-  alertButtons =
-    [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          this.alertDelete.set(false);
-        },
+  alertButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        this.alertDelete.set(false);
       },
-      {
-        text: 'Confirm',
-        role: 'confirm',
-        handler: () => {
-          this.chatMessages.deleteMessages();
-        },
+    },
+    {
+      text: 'Confirm',
+      role: 'confirm',
+      handler: () => {
+        this.chatService.deleteMessages();
       },
-    ];
+    },
+  ];
 
-
-  ngOnInit() {
-    this.chatMessages.loadMessages();
+  ngOnInit(): void {
+    console.log('ejecutando');
+    this.chatService.loadMessages();
     setTimeout(() => {
       this.infiniteScrollDisabled = false;
     }, 3000);
   }
 
+  sendMessage(): void {
+    const message = this.myForm.get('message')?.value as string;
+    if (message.trim() !== '') {
+      const username = this.authService.user()?.displayName!;
+      this.chatService.sendMessage(message, username);
+      this.myForm.reset();
+    }
+  }
+
+  obtainOlderMessages(event: any): void {
+    setTimeout(() => {
+      this.chatService.loadMessages();
+      event.target.complete();
+    }, 1000);
+
+    if (
+      this.chatService.messages().length < this.chatService.amountOfMessages()
+    ) {
+      this.chatService.loadMessages();
+      event.target.complete();
+      event.target.disabled = true;
+    }
+  }
 }

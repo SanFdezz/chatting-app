@@ -1,8 +1,10 @@
+import { canActivate, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 import { Routes } from '@angular/router';
-import { redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angular/fire/compat/auth-guard';
 
+// guards de firebase
 const redirectUnauthorizedToHome = () => redirectUnauthorizedTo(['home']);
 const redirectLoggedToChat = () => redirectLoggedInTo(['chat']);
+
 export const routes: Routes = [
   {
     path: 'home',
