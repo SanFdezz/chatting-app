@@ -10,7 +10,7 @@
   .mine {
     display: inline-block;
     word-wrap: break-word;
-    padding: 0.6em;
+    padding: 2em;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(91, 11, 99, 0.1);
   }
@@ -19,7 +19,7 @@
     align-self: flex-start;
     background-color: #ede7ee;
     margin-left: 2em;
-    padding-left: 1em;
+
 
     .user {
       font-size: large;
@@ -36,7 +36,6 @@
     align-self: flex-end;
     background-color: #e57acf3e;
     margin-right: 2em;
-    padding-right: 1em;
 
     .user {
       font-size: large;
@@ -45,7 +44,7 @@
 
     .dateAndLocation {
       font-size: 12px;
-      color: #7a2860;
+      color: #d8199cbe;
     }
   }
 }

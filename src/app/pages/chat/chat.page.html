@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="padding: 1em">
-    <ion-title style="color: black">Chats de {{username}}</ion-title>
+    <ion-title style="color: black">Chats de {{authService.getStoredUsername()}}</ion-title>
     <ion-button
       id="present-alert"
       color="dark"
@@ -34,12 +34,13 @@
   <div class="chat" id="chat">
     @for (message of chatService.messages(); track $index) {
       <div class="messages">
-        @if(username == message.user){
+        @if(authService.getStoredUsername() == message.user){
           <div class="mine">
             <div class="user">{{message.user}}</div>
             <div>{{message.message}}</div>
             <div class="dateAndLocation">{{message.location}}</div>
-            <div class="dateAndLocation">{{message.date}}</div>
+            <span class="dateAndLocation">{{message.date | date:'shortDate'}} </span>
+            <span class="dateAndLocation">{{message.date | date:'shortTime'}} </span>
           </div>
         }
         @else {
@@ -47,7 +48,8 @@
             <div class="user">{{message.user}}</div>
             <div>{{message.message}}</div>
             <div class="dateAndLocation">{{message.location}}</div>
-            <div class="dateAndLocation">{{message.date}}</div>
+            <span class="dateAndLocation">{{message.date | date:'shortDate'}} </span>
+            <span class="dateAndLocation">{{message.date | date:'shortTime'}} </span>
           </div>
         }
       </div>

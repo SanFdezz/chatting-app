@@ -55,7 +55,6 @@ export class ChatPage implements OnInit {
   chatService = inject<ChatMessagesService>(ChatMessagesService);
   infiniteScrollDisabled: boolean = true;
   alertDelete: WritableSignal<boolean> = signal(true);
-  username?:string;
   currentLocation:string ='';
 
   myForm = new FormGroup({
@@ -80,7 +79,6 @@ export class ChatPage implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.username = localStorage.getItem('username')!;
     this.getCurrentLocation()
     this.chatService.loadMessages();
     setTimeout(() => {
