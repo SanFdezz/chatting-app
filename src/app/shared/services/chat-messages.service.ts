@@ -21,12 +21,13 @@ export class ChatMessagesService {
   messages:WritableSignal<Message[]> = signal([]);
   amountOfMessages: WritableSignal<number> = signal(10);
 
-  sendMessage(newMessage: string, username: string): void {
+  sendMessage(newMessage: string, username: string, location:string): void {
     const date = new Date().toString();
     const message: Message = {
       user: username,
       message: newMessage,
       date: date,
+      location:location,
     };
 
     // RECUERDA!!!! El newMessageRef se pone dentro de la funcion enviar ya que si no, se sobreescribe todo el rato el mensaje

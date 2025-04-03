@@ -21,15 +21,15 @@ export class AuthService {
     this.auth.authState.subscribe((user) => {
       this.user.set(user);
       if (user != null) {
-        localStorage.setItem('userEmail', user.email!);
+        localStorage.setItem('username', user.displayName!);
       } else {
-        localStorage.removeItem('userEmail');
+        localStorage.removeItem('username');
       }
     });
   }
 
-  getStoredEmail(): string | null {
-    return localStorage.getItem('userEmail');
+  getStoredUsername(): string | null {
+    return localStorage.getItem('username');
   }
 
 }

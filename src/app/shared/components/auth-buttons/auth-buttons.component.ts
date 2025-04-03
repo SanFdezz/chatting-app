@@ -21,12 +21,13 @@ export class AuthButtonsComponent  {
   }
 
   logout(){
+    localStorage.removeItem('username');
     this.auth.logout().then(()=>this.router.navigateByUrl('/home'));
     ;
   }
 
   isLogged():boolean{
-    if(this.auth.getStoredEmail()){
+    if(this.auth.getStoredUsername()){
       return true;
     } else {
       return false;

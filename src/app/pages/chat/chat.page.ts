@@ -27,6 +27,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChatMessagesService } from 'src/app/shared/services/chat-messages.service';
+import {Geolocation} from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-chat',
@@ -54,7 +55,8 @@ export class ChatPage implements OnInit {
   chatService = inject<ChatMessagesService>(ChatMessagesService);
   infiniteScrollDisabled: boolean = true;
   alertDelete: WritableSignal<boolean> = signal(true);
-  username = this.authService.user()?.displayName;
+  username?:string;
+  currentLocation:string ='';
 
   myForm = new FormGroup({
     message: new FormControl<string>('', Validators.required),
@@ -78,7 +80,8 @@ export class ChatPage implements OnInit {
   ];
 
   ngOnInit(): void {
-    console.log('ejecutando');
+    this.username = localStorage.getItem('username')!;
+    this.getCurrentLocation()
     this.chatService.loadMessages();
     setTimeout(() => {
       this.infiniteScrollDisabled = false;
@@ -89,7 +92,7 @@ export class ChatPage implements OnInit {
     const message = this.myForm.get('message')?.value as string;
     if (message.trim() !== '') {
       const username = this.authService.user()?.displayName!;
-      this.chatService.sendMessage(message, username);
+      this.chatService.sendMessage(message, username, this.currentLocation);
       this.myForm.reset();
     }
   }
@@ -108,4 +111,12 @@ export class ChatPage implements OnInit {
       event.target.disabled = true;
     }
   }
+
+  async getCurrentLocation() {
+    const coordinates = await Geolocation.getCurrentPosition();
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&format=json`);
+    const data = await response.json();
+    this.currentLocation = data.address.city+', '+data.address.country;
+  }
+
 }
