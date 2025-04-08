@@ -18,23 +18,21 @@ export class ChatMessagesService {
   db = getDatabase();
   messageListRef = ref(this.db, 'messages');
   user = getAuth();
-  messages:WritableSignal<Message[]> = signal([]);
+  messages: WritableSignal<Message[]> = signal([]);
   amountOfMessages: WritableSignal<number> = signal(10);
 
-  sendMessage(newMessage: string, username: string, location:string): void {
+  sendMessage(newMessage: string, username: string, location: string): void {
     const date = new Date().toString();
     const message: Message = {
       user: username,
       message: newMessage,
       date: date,
-      location:location,
+      location: location,
     };
 
     // RECUERDA!!!! El newMessageRef se pone dentro de la funcion enviar ya que si no, se sobreescribe todo el rato el mensaje
     const newMessageRef = push(this.messageListRef);
-    set(newMessageRef,
-      message,
-    );
+    set(newMessageRef, message);
     this.messages.update((_messages) => [..._messages, message]);
   }
 
@@ -56,9 +54,9 @@ export class ChatMessagesService {
         });
 
         this.messages.set(allMessages);
-      } else {
-        this.messages.set([]);
+        return;
       }
+      this.messages.set([]);
     });
   }
 

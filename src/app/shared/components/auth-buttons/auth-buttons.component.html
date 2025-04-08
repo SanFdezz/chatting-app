@@ -1,5 +1,19 @@
 <div class="register">
-  <ion-button shape="round" color="dark" (click)="login()" [disabled]="isLogged()">Log In</ion-button>
-  <ion-button shape="round" color="dark" fill="outline" (click)="logout()" [disabled]="!isLogged()">Log Out</ion-button>
+  <ion-button
+    shape="round"
+    color="dark"
+    (click)="login()"
+    [disabled]="isLogged()"
+  >
+    Log In
+  </ion-button>
+  <ion-button
+    shape="round"
+    color="dark"
+    fill="outline"
+    (click)="logout()"
+    [disabled]="!isLogged()"
+  >
+    Log Out
+  </ion-button>
 </div>
-

@@ -1,37 +1,28 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonButton } from "@ionic/angular/standalone";
+import { IonButton } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/services/auth.service';
-
 
 @Component({
   selector: 'auth-buttons',
   templateUrl: './auth-buttons.component.html',
   styleUrls: ['./auth-buttons.component.scss'],
-  imports:[IonButton]
+  imports: [IonButton],
 })
-export class AuthButtonsComponent  {
+export class AuthButtonsComponent {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
-  auth = inject(AuthService);
-  router = inject(Router);
-
-  login(){
-    this.auth.login().then(()=> this.router.navigateByUrl('/chat'));
-
+  login() {
+    this.auth.login().then(() => this.router.navigateByUrl('/chat'));
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('username');
-    this.auth.logout().then(()=>this.router.navigateByUrl('/home'));
-    ;
+    this.auth.logout().then(() => this.router.navigateByUrl('/home'));
   }
 
-  isLogged():boolean{
-    if(this.auth.getStoredUsername()){
-      return true;
-    } else {
-      return false;
-    }
+  isLogged(): boolean {
+    return this.auth.getStoredUsername() ? true : false;
   }
-
 }

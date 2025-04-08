@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 @Injectable({
@@ -20,16 +20,16 @@ export class AuthService {
   constructor() {
     this.auth.authState.subscribe((user) => {
       this.user.set(user);
-      if (user != null) {
+      if (user !== null) {
         localStorage.setItem('username', user.displayName!);
-      } else {
-        localStorage.removeItem('username');
+        return;
       }
+
+      localStorage.removeItem('username');
     });
   }
 
   getStoredUsername(): string | null {
     return localStorage.getItem('username');
   }
-
 }

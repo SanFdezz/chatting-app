@@ -1,7 +1,6 @@
-
 export interface Message {
-  user:string;
+  user: string;
   message: string;
-  date:string;
-  location:string;
+  date: string;
+  location: string;
 }

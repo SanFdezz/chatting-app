@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthButtonsComponent } from "../auth-buttons/auth-buttons.component";
+import { Component } from '@angular/core';
+import { AuthButtonsComponent } from '../auth-buttons/auth-buttons.component';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +7,4 @@ import { AuthButtonsComponent } from "../auth-buttons/auth-buttons.component";
   styleUrls: ['./header.component.scss'],
   imports: [AuthButtonsComponent],
 })
-export class HeaderComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
-}
+export class HeaderComponent {}

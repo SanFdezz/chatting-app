@@ -27,7 +27,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChatMessagesService } from 'src/app/shared/services/chat-messages.service';
-import {Geolocation} from '@capacitor/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-chat',
@@ -51,11 +51,12 @@ import {Geolocation} from '@capacitor/geolocation';
   ],
 })
 export class ChatPage implements OnInit {
-  authService = inject<AuthService>(AuthService);
-  chatService = inject<ChatMessagesService>(ChatMessagesService);
+  private readonly authService = inject(AuthService);
+  private readonly chatService = inject(ChatMessagesService);
+
   infiniteScrollDisabled: boolean = true;
   alertDelete: WritableSignal<boolean> = signal(true);
-  currentLocation:string ='';
+  currentLocation: string = '';
 
   myForm = new FormGroup({
     message: new FormControl<string>('', Validators.required),
@@ -78,8 +79,11 @@ export class ChatPage implements OnInit {
     },
   ];
 
+  messages = this.chatService.messages;
+  user = this.authService.getStoredUsername;
+
   ngOnInit(): void {
-    this.getCurrentLocation()
+    this.getCurrentLocation();
     this.chatService.loadMessages();
     setTimeout(() => {
       this.infiniteScrollDisabled = false;
@@ -112,9 +116,10 @@ export class ChatPage implements OnInit {
 
   async getCurrentLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&format=json`);
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&format=json`,
+    );
     const data = await response.json();
-    this.currentLocation = data.address.city+', '+data.address.country;
+    this.currentLocation = data.address.city + ', ' + data.address.country;
   }
-
 }

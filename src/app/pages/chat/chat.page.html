@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="padding: 1em">
-    <ion-title style="color: black">Chats de {{authService.getStoredUsername()}}</ion-title>
+    <ion-title style="color: black">Chats de {{user()}}</ion-title>
     <ion-button
       id="present-alert"
       color="dark"
@@ -10,14 +10,14 @@
       Eliminar mensajes del chat
     </ion-button>
     @if(alertDelete()){
-      <ion-alert
-        trigger="present-alert"
-        header="¡Cuidado!"
-        message="¿Seguro que deseas eliminar todos los mensajes? Esta acción no se puede deshacer."
-        [buttons]="alertButtons"
-        (didDismiss)="alertDelete.set(false)"
-      >
-      </ion-alert>
+    <ion-alert
+      trigger="present-alert"
+      header="¡Cuidado!"
+      message="¿Seguro que deseas eliminar todos los mensajes? Esta acción no se puede deshacer."
+      [buttons]="alertButtons"
+      (didDismiss)="alertDelete.set(false)"
+    >
+    </ion-alert>
     }
   </ion-toolbar>
 </ion-header>
@@ -31,30 +31,39 @@
   >
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
   <div class="chat" id="chat">
-    @for (message of chatService.messages(); track $index) {
-      <div class="messages">
-        @if(authService.getStoredUsername() == message.user){
-          <div class="mine">
-            <div class="user">{{message.user}}</div>
-            <div>{{message.message}}</div>
-            <div class="dateAndLocation">{{message.location}}</div>
-            <span class="dateAndLocation">{{message.date | date:'shortDate'}} </span>
-            <span class="dateAndLocation">{{message.date | date:'shortTime'}} </span>
-          </div>
-        }
-        @else {
-          <div class="others">
-            <div class="user">{{message.user}}</div>
-            <div>{{message.message}}</div>
-            <div class="dateAndLocation">{{message.location}}</div>
-            <span class="dateAndLocation">{{message.date | date:'shortDate'}} </span>
-            <span class="dateAndLocation">{{message.date | date:'shortTime'}} </span>
-          </div>
-        }
+    @for (message of messages(); track $index) {
+    <div class="messages">
+      @if(user() === message.user){
+      <div class="mine">
+        <div class="user">{{message.user}}</div>
+        <div>{{message.message}}</div>
+        <div class="dateAndLocation">{{message.location}}</div>
+        <span class="dateAndLocation"
+          >{{message.date | date:'shortDate'}}
+        </span>
+        <span class="dateAndLocation"
+          >{{message.date | date:'shortTime'}}
+        </span>
       </div>
+      } @else {
+      <div class="others">
+        <div class="user">{{message.user}}</div>
+        <div>{{message.message}}</div>
+        <div class="dateAndLocation">{{message.location}}</div>
+        <span class="dateAndLocation"
+          >{{message.date | date:'shortDate'}}
+        </span>
+        <span class="dateAndLocation"
+          >{{message.date | date:'shortTime'}}
+        </span>
+      </div>
+      }
+    </div>
     }
   </div>
+
   <form [formGroup]="myForm" class="form" (ngSubmit)="sendMessage()">
     <ion-item>
       <ion-input

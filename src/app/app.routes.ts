@@ -1,4 +1,8 @@
-import { canActivate, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
+import {
+  canActivate,
+  redirectLoggedInTo,
+  redirectUnauthorizedTo,
+} from '@angular/fire/compat/auth-guard';
 import { Routes } from '@angular/router';
 
 // guards de firebase
@@ -10,9 +14,9 @@ export const routes: Routes = [
     path: 'home',
     // la diferencia entre loadComponent y component a secas es que el component en cuanto cargas la pagina se
     // guarda en memória y el loadComponent carga cuando se le llama a la ruta. Si nunca entras, nunca se carga.
-    loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
-    ...canActivate(redirectLoggedToChat)
-
+    loadComponent: () =>
+      import('./pages/home/home.page').then((m) => m.HomePage),
+    ...canActivate(redirectLoggedToChat),
   },
   {
     path: '',
@@ -21,11 +25,12 @@ export const routes: Routes = [
   },
   {
     path: 'chat',
-    loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage),
-    ...canActivate(redirectUnauthorizedToHome)
+    loadComponent: () =>
+      import('./pages/chat/chat.page').then((m) => m.ChatPage),
+    ...canActivate(redirectUnauthorizedToHome),
   },
   {
     path: '**',
-    redirectTo:'home',
+    redirectTo: 'home',
   },
 ];
